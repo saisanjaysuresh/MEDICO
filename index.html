@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Medico Clinical Telemetry System</title>
+  <meta name="description" content="AI-Powered Inpatient Vitals Monitoring and Decision-Support Clinical Dashboard">
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="app-wrapper">
+    <!-- Mobile Sidebar Backdrop -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+    <!-- -----------------------------------------------------------------------
+         SIDEBAR NAVIGATION
+         ----------------------------------------------------------------------- -->
+    <aside class="app-sidebar" aria-label="Main Navigation">
+      <div class="sidebar-header">
+        <a href="index.html" class="brand-link">
+          <div class="brand-logo-icon">
+            <i data-lucide="activity" class="icon-md"></i>
+          </div>
+          <div>
+            <div class="brand-name">Medico</div>
+            <span class="brand-tag">Inpatient Telemetry</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav-container">
+        <div class="nav-section-title">Clinical Workspace</div>
+        <a href="index.html" class="nav-item active">
+          <i data-lucide="layout-dashboard" class="icon"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="patients.html" class="nav-item">
+          <i data-lucide="users" class="icon"></i>
+          <span>Patients</span>
+          <span class="nav-badge" id="nav-patient-count">12</span>
+        </a>
+        <a href="patient-monitoring.html?id=MED-101" class="nav-item">
+          <i data-lucide="heart-pulse" class="icon"></i>
+          <span>Monitoring</span>
+        </a>
+        <a href="ai-insights.html" class="nav-item">
+          <i data-lucide="sparkles" class="icon"></i>
+          <span>AI Insights</span>
+        </a>
+        <a href="alerts.html" class="nav-item">
+          <i data-lucide="alert-octagon" class="icon"></i>
+          <span>Alerts</span>
+          <span class="nav-badge badge-critical" id="nav-alert-count">!</span>
+        </a>
+
+        <div class="nav-section-title" style="margin-top: 14px;">Administration</div>
+        <a href="reports.html" class="nav-item">
+          <i data-lucide="file-text" class="icon"></i>
+          <span>Reports & Export</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i data-lucide="settings" class="icon"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="engine-status-box">
+          <div class="engine-status-header">
+            <span class="engine-status-title">Telemetry Engine</span>
+            <span id="sidebar-engine-pulse" class="pulse-green"></span>
+          </div>
+          <div class="engine-status-sub" id="sidebar-engine-status-text">Live (3s update)</div>
+          <div style="font-size: 0.65rem; color: #64748B; margin-top: 4px;">Simulated Telemetry Stream</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- -----------------------------------------------------------------------
+         MAIN APPLICATION AREA
+         ----------------------------------------------------------------------- -->
+    <div class="app-main">
+      <!-- Top Navigation Header -->
+      <header class="app-header">
+        <div class="header-left">
+          <button type="button" id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle navigation menu">
+            <i data-lucide="menu" class="icon-md"></i>
+          </button>
+          <div class="header-title-wrap">
+            <h1 class="page-title">Main Clinical Monitoring Dashboard</h1>
+            <div class="page-breadcrumb" id="dashboard-live-clock">Loading live clinical clock...</div>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- Quick Simulation Scenario Selector -->
+          <div class="demo-quick-bar" title="Simulation Preset Scenario">
+            <i data-lucide="play-circle" class="icon-sm text-teal"></i>
+            <span class="text-xs text-secondary font-medium">Scenario:</span>
+            <select id="topbar-scenario-select" class="scenario-select-compact" aria-label="Select simulation preset">
+              <option value="stable">Stable Monitoring (All)</option>
+              <option value="tachycardia">Tachycardia (High HR)</option>
+              <option value="hypoxemia">Hypoxemia (Low SpO₂)</option>
+              <option value="fever">Elevated Temp (Fever)</option>
+              <option value="disconnection">Device Disconnected</option>
+              <option value="recovery">Recovery to Baseline</option>
+            </select>
+            <button type="button" id="topbar-sim-toggle" class="header-btn" style="width:28px; height:28px; border:none; background:transparent;" title="Pause/Play Simulation">
+              <i data-lucide="pause" class="icon-sm"></i>
+            </button>
+          </div>
+
+          <!-- DEMO MODE WATERMARK BADGE -->
+          <span class="demo-badge" title="Synthesized demonstration vitals stream">
+            <span class="pulse-dot"></span> DEMO — SIMULATED VITALS
+          </span>
+
+          <!-- Notification Bell Button -->
+          <button type="button" id="header-notif-btn" class="header-btn" aria-label="Open notifications drawer">
+            <i data-lucide="bell" class="icon-md"></i>
+            <span id="notif-badge-count" class="btn-badge" style="display:none;">0</span>
+          </button>
+
+          <!-- User Profile Menu -->
+          <div class="user-menu-btn">
+            <div class="user-avatar" id="header-user-avatar">SJ</div>
+            <div class="user-info-text">
+              <div class="user-name" id="header-user-name">Dr. Sarah Jenkins</div>
+              <div class="user-role-tag" id="header-user-role">Chief of Cardiology</div>
+            </div>
+            <button type="button" id="header-logout-btn" title="Sign Out" style="color:var(--color-text-tertiary); padding:4px;">
+              <i data-lucide="log-out" class="icon-sm"></i>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Dashboard Content -->
+      <main class="app-content">
+        <!-- Dashboard Top Summary Metric Cards -->
+        <section class="dashboard-metrics-grid" aria-label="Hospital Summary Metrics">
+          <div class="metric-card card-teal">
+            <div class="metric-info">
+              <span class="metric-label">Total Patients</span>
+              <span class="metric-value" id="metric-total-patients">12</span>
+              <span class="metric-sub"><i data-lucide="check" class="icon-sm text-teal"></i> Active roster</span>
+            </div>
+            <div class="metric-icon-wrap metric-icon-teal">
+              <i data-lucide="users" class="icon-lg"></i>
+            </div>
+          </div>
+
+          <div class="metric-card card-navy">
+            <div class="metric-info">
+              <span class="metric-label">Monitored Telemetry</span>
+              <span class="metric-value" id="metric-monitored-patients">11</span>
+              <span class="metric-sub"><i data-lucide="activity" class="icon-sm text-navy"></i> Continuous feeds</span>
+            </div>
+            <div class="metric-icon-wrap metric-icon-navy">
+              <i data-lucide="heart-pulse" class="icon-lg"></i>
+            </div>
+          </div>
+
+          <div class="metric-card card-warning">
+            <div class="metric-info">
+              <span class="metric-label">Requiring Attention</span>
+              <span class="metric-value text-warning" id="metric-attention-patients">3</span>
+              <span class="metric-sub text-warning"><i data-lucide="alert-triangle" class="icon-sm"></i> Warning thresholds</span>
+            </div>
+            <div class="metric-icon-wrap metric-icon-warning">
+              <i data-lucide="alert-triangle" class="icon-lg"></i>
+            </div>
+          </div>
+
+          <div class="metric-card card-critical">
+            <div class="metric-info">
+              <span class="metric-label">Critical Alerts</span>
+              <span class="metric-value text-critical" id="metric-critical-alerts">1</span>
+              <span class="metric-sub text-critical"><i data-lucide="alert-octagon" class="icon-sm"></i> Immediate action</span>
+            </div>
+            <div class="metric-icon-wrap metric-icon-critical">
+              <i data-lucide="alert-octagon" class="icon-lg"></i>
+            </div>
+          </div>
+
+          <div class="metric-card card-normal">
+            <div class="metric-info">
+              <span class="metric-label">Data Ingestion</span>
+              <span class="metric-value" style="font-size:1.35rem; color:var(--color-normal);">100% LIVE</span>
+              <span class="metric-sub"><span class="pulse-green"></span> 2.5s Markov Drift</span>
+            </div>
+            <div class="metric-icon-wrap metric-icon-normal">
+              <i data-lucide="radio" class="icon-lg"></i>
+            </div>
+          </div>
+        </section>
+
+        <!-- Mini Sparkline Aggregate Trend Bar -->
+        <section class="dashboard-charts-grid" aria-label="Real-time Vital Trend Sparklines">
+          <div class="mini-chart-card">
+            <div class="mini-chart-header">
+              <span class="mini-chart-title text-critical">
+                <i data-lucide="heart" class="icon-sm"></i> Heart Rate (MED-101)
+              </span>
+              <span class="mini-chart-val text-critical" id="spark-val-hr">76 bpm</span>
+            </div>
+            <div class="mini-chart-canvas-wrap">
+              <canvas id="chart-spark-hr"></canvas>
+            </div>
+          </div>
+
+          <div class="mini-chart-card">
+            <div class="mini-chart-header">
+              <span class="mini-chart-title text-teal">
+                <i data-lucide="wind" class="icon-sm"></i> Oxygen Saturation (SpO₂)
+              </span>
+              <span class="mini-chart-val text-teal" id="spark-val-spo2">98%</span>
+            </div>
+            <div class="mini-chart-canvas-wrap">
+              <canvas id="chart-spark-spo2"></canvas>
+            </div>
+          </div>
+
+          <div class="mini-chart-card">
+            <div class="mini-chart-header">
+              <span class="mini-chart-title" style="color: var(--vital-bp);">
+                <i data-lucide="activity" class="icon-sm"></i> Blood Pressure (Sys)
+              </span>
+              <span class="mini-chart-val" style="color: var(--vital-bp);" id="spark-val-bp">122/78</span>
+            </div>
+            <div class="mini-chart-canvas-wrap">
+              <canvas id="chart-spark-bp"></canvas>
+            </div>
+          </div>
+
+          <div class="mini-chart-card">
+            <div class="mini-chart-header">
+              <span class="mini-chart-title" style="color: var(--vital-temp);">
+                <i data-lucide="thermometer" class="icon-sm"></i> Body Temperature
+              </span>
+              <span class="mini-chart-val" style="color: var(--vital-temp);" id="spark-val-temp">36.8°C</span>
+            </div>
+            <div class="mini-chart-canvas-wrap">
+              <canvas id="chart-spark-temp"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- Main Dashboard 2-Column Section -->
+        <div class="dashboard-main-layout">
+          <!-- Left Column: Multi-Patient Real-Time Vitals Table -->
+          <div class="dashboard-left-col">
+            <div class="card">
+              <div class="vitals-table-toolbar">
+                <div style="display:flex; align-items:center; gap: 10px; flex: 1; max-width: 320px;">
+                  <div class="input-icon-wrap" style="width: 100%;">
+                    <i data-lucide="search" class="icon"></i>
+                    <input type="text" id="dashboard-search-input" class="form-control" placeholder="Search patient name, ID, or room...">
+                  </div>
+                </div>
+
+                <div class="filter-pills-wrap">
+                  <button type="button" class="filter-pill active" data-filter="all">All Patients</button>
+                  <button type="button" class="filter-pill" data-filter="normal">Stable</button>
+                  <button type="button" class="filter-pill" data-filter="warning">Warning</button>
+                  <button type="button" class="filter-pill" data-filter="critical">Critical</button>
+                  <button type="button" class="filter-pill" data-filter="disconnected">Offline / Stale</button>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="med-table" aria-label="Inpatient Multi-Vitals Telemetry Table">
+                  <thead>
+                    <tr>
+                      <th class="sortable" data-sort="name">Patient <i data-lucide="chevrons-up-down" class="icon-xs" style="display:inline;"></i></th>
+                      <th>Location / Care</th>
+                      <th class="sortable" data-sort="hr">Heart Rate</th>
+                      <th class="sortable" data-sort="spo2">SpO₂</th>
+                      <th>Blood Pressure</th>
+                      <th>Resp Rate</th>
+                      <th>Temp</th>
+                      <th>Last Update</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashboard-vitals-tbody">
+                    <!-- Populated dynamically by dashboard.js with live flashing updates -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Critical Attention & Clinical Activity Feed -->
+          <div class="dashboard-right-col">
+            <!-- Critical Attention Side Panel -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title text-critical">
+                  <i data-lucide="alert-octagon" class="icon-md"></i>
+                  Critical Attention
+                </h3>
+                <a href="alerts.html" class="btn btn-outline btn-sm">All Alerts</a>
+              </div>
+              <div class="card-body">
+                <div id="dashboard-critical-alerts-list" class="critical-alerts-list">
+                  <!-- Injected by dashboard.js -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Activity Feed -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i data-lucide="clock" class="icon-md"></i>
+                  Clinical Activity Feed
+                </h3>
+              </div>
+              <div class="card-body">
+                <div id="dashboard-recent-activity" class="activity-timeline">
+                  <!-- Injected by dashboard.js -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- -------------------------------------------------------------------------
+       NOTIFICATION SLIDE-OVER DRAWER
+       ------------------------------------------------------------------------- -->
+  <div id="notification-backdrop" class="modal-backdrop"></div>
+  <aside id="notification-drawer" class="notification-drawer" aria-label="Notifications Drawer">
+    <div class="drawer-header">
+      <div style="display:flex; align-items:center; gap: 8px;">
+        <i data-lucide="bell" class="icon-md text-navy"></i>
+        <h3 style="font-size: var(--font-size-md); font-weight: var(--font-weight-bold);">Notifications</h3>
+      </div>
+      <div style="display:flex; align-items:center; gap: 6px;">
+        <button type="button" id="mark-all-read-btn" class="btn btn-secondary btn-sm" title="Mark all read">
+          <i data-lucide="check" class="icon-xs"></i>
+        </button>
+        <button type="button" id="close-drawer-btn" class="header-btn" style="width:30px; height:30px;" aria-label="Close drawer">
+          <i data-lucide="x" class="icon-sm"></i>
+        </button>
+      </div>
+    </div>
+    <div class="drawer-body" id="drawer-notifications-list">
+      <!-- Injected by notifications.js -->
+    </div>
+  </aside>
+
+  <!-- Global Toast Notifications Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/utils.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/alerts.js"></script>
+  <script src="js/simulation.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

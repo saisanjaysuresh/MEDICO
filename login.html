@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — Medico Clinical Telemetry Platform</title>
+  <meta name="description" content="Secure clinical login to Medico AI-Assisted Patient Vitals Monitoring System">
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <style>
+    .login-page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0E2033 0%, #16324F 50%, #102A45 100%);
+      padding: 24px;
+      position: relative;
+    }
+
+    .login-card-container {
+      width: 100%;
+      max-width: 480px;
+      background-color: var(--color-surface);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+    }
+
+    .login-card-header {
+      padding: 32px 32px 24px 32px;
+      text-align: center;
+      background-color: #F8FAFC;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .login-brand-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, var(--color-medical-teal), #00C6BA);
+      border-radius: var(--radius-lg);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(15, 157, 154, 0.35);
+      margin-bottom: 12px;
+    }
+
+    .login-card-body {
+      padding: 32px;
+    }
+
+    .demo-accounts-box {
+      margin-top: 24px;
+      padding: 16px;
+      background-color: var(--color-surface-muted);
+      border: 1px dashed var(--color-border);
+      border-radius: var(--radius-lg);
+    }
+
+    .demo-accounts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .demo-role-btn {
+      padding: 8px 10px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background-color: var(--color-surface);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text-primary);
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      transition: all var(--transition-fast);
+    }
+
+    .demo-role-btn:hover {
+      border-color: var(--color-medical-teal);
+      background-color: var(--color-medical-teal-light);
+    }
+
+    .demo-role-btn .role-name {
+      font-weight: var(--font-weight-bold);
+      color: var(--color-primary-navy);
+    }
+  </style>
+</head>
+<body>
+  <div class="login-page-wrapper">
+    <div class="login-card-container">
+      <div class="login-card-header">
+        <div class="login-brand-logo">
+          <i data-lucide="activity" class="icon-lg"></i>
+        </div>
+        <h1 class="h2" style="color: var(--color-primary-navy); margin-bottom: 4px;">Medico</h1>
+        <p class="text-sm">AI-Powered Patient Vitals & Clinical Monitoring</p>
+        <div style="margin-top: 10px;">
+          <span class="demo-badge">
+            <span class="pulse-dot"></span> Inpatient Telemetry Demo
+          </span>
+        </div>
+      </div>
+
+      <div class="login-card-body">
+        <form id="login-form">
+          <div class="form-group">
+            <label class="form-label" for="login-email">Hospital Email <span class="required">*</span></label>
+            <div class="input-icon-wrap">
+              <i data-lucide="mail" class="icon"></i>
+              <input type="email" id="login-email" class="form-control" placeholder="doctor@medico.hospital" required value="s.jenkins@medico.hospital">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <label class="form-label" for="login-password">Password <span class="required">*</span></label>
+              <a href="#" id="forgot-password-link" style="font-size: 0.75rem; color: var(--color-medical-teal);">Forgot password?</a>
+            </div>
+            <div class="input-icon-wrap input-icon-wrap-right">
+              <i data-lucide="lock" class="icon"></i>
+              <input type="password" id="login-password" class="form-control" placeholder="••••••••••••" required value="demo-password-123">
+              <button type="button" id="toggle-password-btn" class="right-action" aria-label="Show password">
+                <i data-lucide="eye" class="icon-sm"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" id="login-submit-btn" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 8px;">
+            <i data-lucide="log-in" class="icon-sm"></i>
+            Sign In to Clinical Workspace
+          </button>
+        </form>
+
+        <!-- Quick One-Click Demo Role Login -->
+        <div class="demo-accounts-box">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <span class="text-xs font-semibold text-secondary">PRESET CLINICAL DEMO ACCOUNTS</span>
+            <span class="status-pill status-info" style="font-size: 0.65rem;">1-Click Entry</span>
+          </div>
+
+          <div class="demo-accounts-grid">
+            <button type="button" class="demo-role-btn" data-demo-role="doctor">
+              <span class="role-name"><i data-lucide="stethoscope" class="icon-sm" style="display:inline;"></i> Doctor</span>
+              <span>Dr. Sarah Jenkins</span>
+            </button>
+            <button type="button" class="demo-role-btn" data-demo-role="nurse">
+              <span class="role-name"><i data-lucide="heart" class="icon-sm" style="display:inline;"></i> Nurse</span>
+              <span>Marcus O'Connor</span>
+            </button>
+            <button type="button" class="demo-role-btn" data-demo-role="admin">
+              <span class="role-name"><i data-lucide="shield" class="icon-sm" style="display:inline;"></i> Admin</span>
+              <span>Alex Rivera</span>
+            </button>
+            <button type="button" class="demo-role-btn" data-demo-role="caregiver">
+              <span class="role-name"><i data-lucide="users" class="icon-sm" style="display:inline;"></i> Caregiver</span>
+              <span>Maria Vance</span>
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px; text-align: center; font-size: 0.75rem; color: var(--color-text-tertiary);">
+          Demonstration project strictly for academic and portfolio evaluation.<br>Simulated physiological streams & decision-support only.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/utils.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      // Password toggle
+      const pwdInput = document.getElementById('login-password');
+      const toggleBtn = document.getElementById('toggle-password-btn');
+      if (toggleBtn && pwdInput) {
+        toggleBtn.addEventListener('click', () => {
+          const type = pwdInput.getAttribute('type') === 'password' ? 'text' : 'password';
+          pwdInput.setAttribute('type', type);
+          toggleBtn.innerHTML = type === 'password' 
+            ? '<i data-lucide="eye" class="icon-sm"></i>' 
+            : '<i data-lucide="eye-off" class="icon-sm"></i>';
+          if (typeof lucide !== 'undefined') lucide.createIcons();
+        });
+      }
+
+      // Quick demo role login buttons
+      const demoBtns = document.querySelectorAll('[data-demo-role]');
+      demoBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const role = btn.dataset.demoRole;
+          const user = Auth.loginAsPreset(role);
+          App.toast('Authenticated', `Signed in as ${user.name} (${user.roleTitle}). Redirecting...`, 'success');
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 600);
+        });
+      });
+
+      // Regular form submit
+      const form = document.getElementById('login-form');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const email = document.getElementById('login-email').value;
+          const password = document.getElementById('login-password').value;
+          const res = Auth.loginWithEmail(email, password);
+
+          if (res.success) {
+            App.toast('Authenticated', `Welcome back, ${res.user.name}. Redirecting...`, 'success');
+            setTimeout(() => {
+              window.location.href = 'index.html';
+            }, 600);
+          } else {
+            App.toast('Sign In Error', res.error, 'critical');
+          }
+        });
+      }
+
+      // Forgot password trigger
+      const forgotLink = document.getElementById('forgot-password-link');
+      if (forgotLink) {
+        forgotLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          App.toast('Password Reset', 'In demo mode, use any of the preset clinical demo accounts below.', 'info');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+/* ==========================================================================
+   MEDICO RESPONSIVE DESIGN STYLES
+   ========================================================================== */
+
+/* Large Tablets / Small Desktops */
+@media (max-width: 1200px) {
+  .dashboard-main-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-right-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}
+
+/* Medium Tablets */
+@media (max-width: 992px) {
+  :root {
+    --sidebar-width: 0px;
+  }
+
+  .app-sidebar {
+    transform: translateX(-100%);
+    width: 260px;
+    box-shadow: var(--shadow-modal);
+  }
+
+  .app-sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .app-main {
+    margin-left: 0;
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(15, 23, 42, 0.5);
+    z-index: calc(var(--z-sidebar) - 1);
+  }
+
+  .sidebar-backdrop.active {
+    display: block;
+  }
+
+  .dashboard-right-col {
+    grid-template-columns: 1fr;
+  }
+
+  .app-header {
+    padding: 0 16px;
+  }
+
+  .app-content {
+    padding: 16px;
+  }
+
+  .patient-profile-header-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Mobile Phones (< 768px) */
+@media (max-width: 768px) {
+  .header-right .demo-quick-bar,
+  .user-info-text {
+    display: none;
+  }
+
+  .dashboard-metrics-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .mini-chart-card {
+    min-width: 100%;
+  }
+
+  .content-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .content-header-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .vitals-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-container {
+    max-width: 100%;
+    margin: 10px;
+    max-height: 95vh;
+  }
+
+  .toast-container {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .toast {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .nav-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+/* Extra Small Phones (< 480px) */
+@media (max-width: 480px) {
+  .dashboard-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-title {
+    font-size: var(--font-size-base);
+  }
+}

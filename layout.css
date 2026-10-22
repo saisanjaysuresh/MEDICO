@@ -1,0 +1,369 @@
+/* ==========================================================================
+   MEDICO APPLICATION LAYOUT (Sidebar, Header, Main Wrapper)
+   ========================================================================== */
+
+.app-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+/* --------------------------------------------------------------------------
+   SIDEBAR NAVIGATION
+   -------------------------------------------------------------------------- */
+.app-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background-color: var(--color-primary-navy);
+  color: #E2E8F0;
+  display: flex;
+  flex-direction: column;
+  z-index: var(--z-sidebar);
+  transition: transform var(--transition-normal);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-header {
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-text-inverse);
+  text-decoration: none;
+}
+
+.brand-logo-icon {
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(135deg, var(--color-medical-teal), #00C6BA);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(15, 157, 154, 0.35);
+}
+
+.brand-name {
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+}
+
+.brand-tag {
+  font-size: 0.65rem;
+  background-color: rgba(15, 157, 154, 0.25);
+  color: #5EEAD4;
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.sidebar-nav-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nav-section-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #64748B;
+  padding: 8px 12px 4px 12px;
+  font-weight: var(--font-weight-bold);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  color: #94A3B8;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast);
+  position: relative;
+  text-decoration: none;
+}
+
+.nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #F8FAFC;
+}
+
+.nav-item.active {
+  background-color: var(--color-medical-teal);
+  color: #FFFFFF;
+  font-weight: var(--font-weight-semibold);
+  box-shadow: 0 2px 8px rgba(15, 157, 154, 0.3);
+}
+
+.nav-item .nav-badge {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  background-color: rgba(255, 255, 255, 0.16);
+  color: #FFFFFF;
+}
+
+.nav-item.active .nav-badge {
+  background-color: #FFFFFF;
+  color: var(--color-medical-teal);
+}
+
+.nav-item .nav-badge.badge-critical {
+  background-color: #EF4444;
+  color: #FFFFFF;
+}
+
+/* Sidebar Footer Info Card */
+.sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(0, 0, 0, 0.12);
+}
+
+.engine-status-box {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  font-size: var(--font-size-xs);
+}
+
+.engine-status-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.engine-status-title {
+  font-weight: var(--font-weight-semibold);
+  color: #CBD5E1;
+}
+
+.engine-status-sub {
+  color: #94A3B8;
+  font-size: 0.7rem;
+}
+
+/* --------------------------------------------------------------------------
+   MAIN APPLICATION AREA & HEADER
+   -------------------------------------------------------------------------- */
+.app-main {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  height: var(--header-height);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  z-index: var(--z-header);
+  box-shadow: var(--shadow-xs);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.mobile-menu-btn {
+  display: none;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+}
+
+.header-title-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.page-breadcrumb {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Quick Scenario Bar in Header */
+.demo-quick-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  padding: 4px 10px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+}
+
+.scenario-select-compact {
+  background: transparent;
+  border: none;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-primary);
+  outline: none;
+  cursor: pointer;
+}
+
+/* Header Action Buttons */
+.header-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  transition: all var(--transition-fast);
+}
+
+.header-btn:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--color-text-primary);
+  border-color: #CBD5E1;
+}
+
+.header-btn .btn-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-critical);
+  color: #FFFFFF;
+  font-size: 0.65rem;
+  font-weight: var(--font-weight-bold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid var(--color-surface);
+}
+
+/* User Profile Menu Button */
+.user-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 8px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  transition: background-color var(--transition-fast);
+}
+
+.user-menu-btn:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary-navy), var(--color-medical-teal));
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-bold);
+  font-size: 0.8rem;
+}
+
+.user-info-text {
+  text-align: left;
+  line-height: 1.1;
+}
+
+.user-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.user-role-tag {
+  font-size: 0.7rem;
+  color: var(--color-text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   CONTENT WRAPPER
+   -------------------------------------------------------------------------- */
+.app-content {
+  flex: 1;
+  padding: 24px 28px;
+  max-width: var(--max-content-width);
+  width: 100%;
+}
+
+/* Content Header with Action buttons */
+.content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.content-header-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.content-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

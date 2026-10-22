@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Directory — Medico Clinical System</title>
+  <meta name="description" content="Inpatient directory, admission records, and patient registration management">
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="app-wrapper">
+    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="app-sidebar" aria-label="Main Navigation">
+      <div class="sidebar-header">
+        <a href="index.html" class="brand-link">
+          <div class="brand-logo-icon">
+            <i data-lucide="activity" class="icon-md"></i>
+          </div>
+          <div>
+            <div class="brand-name">Medico</div>
+            <span class="brand-tag">Inpatient Telemetry</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav-container">
+        <div class="nav-section-title">Clinical Workspace</div>
+        <a href="index.html" class="nav-item">
+          <i data-lucide="layout-dashboard" class="icon"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="patients.html" class="nav-item active">
+          <i data-lucide="users" class="icon"></i>
+          <span>Patients</span>
+          <span class="nav-badge" id="nav-patient-count">12</span>
+        </a>
+        <a href="patient-monitoring.html?id=MED-101" class="nav-item">
+          <i data-lucide="heart-pulse" class="icon"></i>
+          <span>Monitoring</span>
+        </a>
+        <a href="ai-insights.html" class="nav-item">
+          <i data-lucide="sparkles" class="icon"></i>
+          <span>AI Insights</span>
+        </a>
+        <a href="alerts.html" class="nav-item">
+          <i data-lucide="alert-octagon" class="icon"></i>
+          <span>Alerts</span>
+          <span class="nav-badge badge-critical">!</span>
+        </a>
+
+        <div class="nav-section-title" style="margin-top: 14px;">Administration</div>
+        <a href="reports.html" class="nav-item">
+          <i data-lucide="file-text" class="icon"></i>
+          <span>Reports & Export</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+          <i data-lucide="settings" class="icon"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="engine-status-box">
+          <div class="engine-status-header">
+            <span class="engine-status-title">Telemetry Engine</span>
+            <span id="sidebar-engine-pulse" class="pulse-green"></span>
+          </div>
+          <div class="engine-status-sub" id="sidebar-engine-status-text">Live (3s update)</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN APP AREA -->
+    <div class="app-main">
+      <header class="app-header">
+        <div class="header-left">
+          <button type="button" id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle navigation menu">
+            <i data-lucide="menu" class="icon-md"></i>
+          </button>
+          <div class="header-title-wrap">
+            <h1 class="page-title">Inpatient Directory & Admission Records</h1>
+            <div class="page-breadcrumb">Patients / Directory & Patient Management</div>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="demo-quick-bar" title="Simulation Preset Scenario">
+            <i data-lucide="play-circle" class="icon-sm text-teal"></i>
+            <span class="text-xs text-secondary font-medium">Scenario:</span>
+            <select id="topbar-scenario-select" class="scenario-select-compact" aria-label="Select simulation preset">
+              <option value="stable">Stable Monitoring (All)</option>
+              <option value="tachycardia">Tachycardia (High HR)</option>
+              <option value="hypoxemia">Hypoxemia (Low SpO₂)</option>
+              <option value="fever">Elevated Temp (Fever)</option>
+              <option value="disconnection">Device Disconnected</option>
+              <option value="recovery">Recovery to Baseline</option>
+            </select>
+            <button type="button" id="topbar-sim-toggle" class="header-btn" style="width:28px; height:28px; border:none; background:transparent;" title="Pause/Play Simulation">
+              <i data-lucide="pause" class="icon-sm"></i>
+            </button>
+          </div>
+
+          <span class="demo-badge">
+            <span class="pulse-dot"></span> DEMO — SIMULATED VITALS
+          </span>
+
+          <button type="button" id="header-notif-btn" class="header-btn" aria-label="Open notifications drawer">
+            <i data-lucide="bell" class="icon-md"></i>
+            <span id="notif-badge-count" class="btn-badge" style="display:none;">0</span>
+          </button>
+
+          <div class="user-menu-btn">
+            <div class="user-avatar" id="header-user-avatar">SJ</div>
+            <div class="user-info-text">
+              <div class="user-name" id="header-user-name">Dr. Sarah Jenkins</div>
+              <div class="user-role-tag" id="header-user-role">Chief of Cardiology</div>
+            </div>
+            <button type="button" id="header-logout-btn" title="Sign Out" style="color:var(--color-text-tertiary); padding:4px;">
+              <i data-lucide="log-out" class="icon-sm"></i>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <main class="app-content">
+        <div class="content-header">
+          <div class="content-header-title">
+            <h2 class="h3" style="display:flex; align-items:center; gap: 8px;">
+              <span>Registered Inpatients</span>
+              <span class="status-pill status-info" id="patients-count-badge">12 Patients</span>
+            </h2>
+            <p class="text-sm">Manage electronic hospital admission records, demographics, and clinical assignments.</p>
+          </div>
+
+          <div class="content-header-actions">
+            <button type="button" id="export-directory-btn" class="btn btn-secondary">
+              <i data-lucide="download" class="icon-sm"></i>
+              Export Directory (CSV)
+            </button>
+            <button type="button" id="add-patient-btn" class="btn btn-primary">
+              <i data-lucide="user-plus" class="icon-sm"></i>
+              Register New Patient
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Toolbar -->
+        <div class="card" style="margin-bottom: 20px; padding: 14px 18px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap: 14px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap: 12px; flex:1; min-width: 260px;">
+              <div class="input-icon-wrap" style="width: 100%; max-width: 360px;">
+                <i data-lucide="search" class="icon"></i>
+                <input type="text" id="patient-search-input" class="form-control" placeholder="Search patient name, ID, diagnosis, or ward...">
+              </div>
+
+              <select id="patient-status-filter" class="form-select" style="max-width: 180px;">
+                <option value="all">All Statuses</option>
+                <option value="monitored">Actively Monitored</option>
+                <option value="disconnected">Disconnected / Stale</option>
+              </select>
+            </div>
+
+            <!-- View Mode Switcher -->
+            <div style="display:flex; align-items:center; gap: 6px; background-color: var(--color-surface-muted); padding: 4px; border-radius: var(--radius-md); border: 1px solid var(--color-border);">
+              <button type="button" id="view-mode-table-btn" class="btn btn-sm btn-secondary active" title="Table View">
+                <i data-lucide="table" class="icon-sm"></i> Table
+              </button>
+              <button type="button" id="view-mode-grid-btn" class="btn btn-sm btn-secondary" title="Card View">
+                <i data-lucide="grid" class="icon-sm"></i> Cards
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table View -->
+        <div id="patients-table-view" class="card">
+          <div class="table-responsive">
+            <table class="med-table" aria-label="Patient Directory Table">
+              <thead>
+                <tr>
+                  <th>Patient Name & ID</th>
+                  <th>Age & Sex</th>
+                  <th>Location / Bed</th>
+                  <th>Admission Diagnosis</th>
+                  <th>Assigned Clinician</th>
+                  <th>Latest Vitals</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="patients-directory-tbody">
+                <!-- Injected by patients.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Card Grid View -->
+        <div id="patients-grid-view" class="dashboard-metrics-grid" style="display:none; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
+          <!-- Injected by patients.js -->
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- -------------------------------------------------------------------------
+       REGISTER / EDIT PATIENT MODAL DIALOG
+       ------------------------------------------------------------------------- -->
+  <div id="patient-modal-backdrop" class="modal-backdrop">
+    <div class="modal-container modal-lg">
+      <div class="modal-header">
+        <h3 id="patient-modal-title" class="modal-title">Register New Inpatient</h3>
+        <button type="button" id="patient-modal-close" class="modal-close" aria-label="Close modal">
+          <i data-lucide="x" class="icon-md"></i>
+        </button>
+      </div>
+
+      <form id="patient-form">
+        <div class="modal-body">
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="form-patient-name">Full Legal Name <span class="required">*</span></label>
+              <input type="text" id="form-patient-name" class="form-control" placeholder="e.g. Johnathan Doe" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-patient-id">Patient ID (MED-XXX) <span class="required">*</span></label>
+              <input type="text" id="form-patient-id" class="form-control" placeholder="MED-113" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-patient-age">Age (Years) <span class="required">*</span></label>
+              <input type="number" id="form-patient-age" class="form-control" min="1" max="120" placeholder="55" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-patient-gender">Biological Sex <span class="required">*</span></label>
+              <select id="form-patient-gender" class="form-select" required>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-patient-room">Ward / Bed Location <span class="required">*</span></label>
+              <input type="text" id="form-patient-room" class="form-control" placeholder="e.g. ICU-Bed 06, Room 304" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-patient-clinician">Assigned Primary Clinician <span class="required">*</span></label>
+              <input type="text" id="form-patient-clinician" class="form-control" placeholder="e.g. Dr. Sarah Jenkins" required>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 6px;">
+            <label class="form-label" for="form-patient-diagnosis">Admission Clinical Diagnosis <span class="required">*</span></label>
+            <input type="text" id="form-patient-diagnosis" class="form-control" placeholder="e.g. Acute Coronary Syndrome Observation" required>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="form-patient-allergies">Documented Allergies</label>
+              <input type="text" id="form-patient-allergies" class="form-control" placeholder="e.g. Penicillin, Codeine">
+              <span class="form-hint">Separate multiple entries with commas.</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-patient-meds">Active Medications</label>
+              <input type="text" id="form-patient-meds" class="form-control" placeholder="e.g. Aspirin 81mg, Metoprolol 25mg">
+              <span class="form-hint">Separate multiple entries with commas.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="patient-modal-cancel" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Patient Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notification Drawer & Toast Container -->
+  <div id="notification-backdrop" class="modal-backdrop"></div>
+  <aside id="notification-drawer" class="notification-drawer">
+    <div class="drawer-header">
+      <div style="display:flex; align-items:center; gap: 8px;">
+        <i data-lucide="bell" class="icon-md text-navy"></i>
+        <h3 style="font-size: var(--font-size-md); font-weight: var(--font-weight-bold);">Notifications</h3>
+      </div>
+      <button type="button" id="close-drawer-btn" class="header-btn" style="width:30px; height:30px;" aria-label="Close drawer">
+        <i data-lucide="x" class="icon-sm"></i>
+      </button>
+    </div>
+    <div class="drawer-body" id="drawer-notifications-list"></div>
+  </aside>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/utils.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/alerts.js"></script>
+  <script src="js/simulation.js"></script>
+  <script src="js/firebase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/patients.js"></script>
+</body>
+</html>
